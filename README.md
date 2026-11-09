@@ -15,9 +15,12 @@ Une fois le site en ligne et vérifié, le dossier `seed/` peut être supprimé 
 
 ### Ajouter de nouvelles recettes du seed à une base déjà en ligne
 
-1. Mettre à jour `seed/recettes.sqlite`, commiter et pousser (Railway redéploie).
-2. Dans un terminal : `railway ssh` (après `railway link` sur le projet), puis :
-   ```bash
-   php bin/fusionner-seed.php
-   ```
+1. Mettre à jour `seed/recettes.sqlite`, commiter et pousser.
+2. Sur Railway, dans **Variables**, ajouter `FUSIONNER_SEED` = `1`
+   (Railway redéploie ; au démarrage, les recettes manquantes sont ajoutées).
+3. Vérifier dans **Deployments → View logs** les lignes « recette(s) ajoutée(s) ».
+4. **Supprimer la variable `FUSIONNER_SEED`** (sinon une recette du seed supprimée sur le site
+   reviendrait à chaque redéploiement).
+
 Seules les recettes dont le titre n'existe pas encore sont ajoutées ; rien n'est modifié ni supprimé.
+(Alternative en ligne de commande : `railway ssh` puis `php bin/fusionner-seed.php`.)
