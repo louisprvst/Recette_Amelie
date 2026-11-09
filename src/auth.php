@@ -7,11 +7,23 @@
 // fabriquer un faux cookie sans le connaître. Si tu changes le mot de passe,
 // tous les appareils sont automatiquement déconnectés.
 
-if (!is_file(__DIR__ . '/config.php')) {
+// Le hash du mot de passe vient soit de src/config.php (en local),
+// soit de la variable d'environnement MOT_DE_PASSE_HASH (en ligne, sur Railway).
+if (is_file(__DIR__ . '/config.php')) {
+    require_once __DIR__ . '/config.php';
+} elseif (getenv('MOT_DE_PASSE_HASH')) {
+    define('MOT_DE_PASSE_HASH', getenv('MOT_DE_PASSE_HASH'));
+} else {
     http_response_code(500);
-    exit('Mot de passe non défini : lance « php bin/mot-de-passe.php » dans un terminal (voir README).');
+    exit('Mot de passe non défini : lance « php bin/mot-de-passe.php » (en local) ou définis la variable MOT_DE_PASSE_HASH (en ligne). Voir README.');
 }
-require_once __DIR__ . '/config.php';
+
+// Vrai si la page est servie en HTTPS, y compris derrière le proxy de Railway.
+function en_https(): bool
+{
+    return !empty($_SERVER['HTTPS'])
+        || ($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https';
+}
 
 const COOKIE_AUTH = 'recettes_famille';
 const DUREE_CONNEXION = 60 * 24 * 3600; // 60 jours, en secondes
@@ -39,7 +51,7 @@ function poser_cookie(string $valeur, int $expiration): void
         'path'     => '/',
         'httponly' => true,   // inaccessible au JavaScript
         'samesite' => 'Lax',  // pas envoyé par les formulaires d'autres sites
-        'secure'   => !empty($_SERVER['HTTPS']), // HTTPS uniquement quand il est actif
+        'secure'   => en_https(), // HTTPS uniquement quand il est actif
     ]);
 }
 

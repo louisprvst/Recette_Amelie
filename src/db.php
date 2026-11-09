@@ -1,12 +1,18 @@
 <?php
-// Connexion à la base SQLite (un simple fichier dans data/).
+// Connexion à la base SQLite (un simple fichier).
+// En local : data/recettes.sqlite. En ligne (Railway) : le chemin donné par la
+// variable d'environnement DB_PATH (ex. /data/recettes.sqlite sur le volume).
 // La table est créée automatiquement au premier lancement.
 
 function db(): PDO
 {
     static $pdo = null;
     if ($pdo === null) {
-        $pdo = new PDO('sqlite:' . __DIR__ . '/../data/recettes.sqlite');
+        $chemin = getenv('DB_PATH') ?: __DIR__ . '/../data/recettes.sqlite';
+        if (!is_dir(dirname($chemin))) {
+            mkdir(dirname($chemin), 0775, true);
+        }
+        $pdo = new PDO('sqlite:' . $chemin);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 
