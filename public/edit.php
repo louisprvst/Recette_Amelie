@@ -14,7 +14,7 @@ if ($id && !$recette) {
 // Valeurs par défaut du formulaire.
 $r = $recette ?? [
     'titre' => '', 'categorie' => 'Plat', 'temps' => '', 'personnes' => 4,
-    'ingredients' => '', 'etapes' => '', 'auteur' => '', 'source' => '',
+    'ingredients' => '', 'etapes' => '', 'auteur' => '',
 ];
 $erreurs = [];
 
@@ -28,7 +28,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'ingredients' => trim($_POST['ingredients'] ?? ''),
         'etapes'      => trim($_POST['etapes'] ?? ''),
         'auteur'      => trim($_POST['auteur'] ?? ''),
-        'source'      => trim($_POST['source'] ?? ''),
     ];
 
     if ($r['titre'] === '') $erreurs[] = 'Le titre est obligatoire.';
@@ -36,14 +35,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (!$erreurs) {
         $valeurs = [$r['titre'], $r['categorie'], $r['temps'], $r['personnes'],
-                    $r['ingredients'], $r['etapes'], $r['auteur'], $r['source']];
+                    $r['ingredients'], $r['etapes'], $r['auteur']];
         if ($recette) {
             $stmt = db()->prepare('UPDATE recettes SET titre=?, categorie=?, temps=?, personnes=?,
-                ingredients=?, etapes=?, auteur=?, source=?, modifie_le=CURRENT_TIMESTAMP WHERE id=?');
+                ingredients=?, etapes=?, auteur=?, modifie_le=CURRENT_TIMESTAMP WHERE id=?');
             $stmt->execute([...$valeurs, $id]);
         } else {
             $stmt = db()->prepare('INSERT INTO recettes (titre, categorie, temps, personnes,
-                ingredients, etapes, auteur, source) VALUES (?, ?, ?, ?, ?, ?, ?, ?)');
+                ingredients, etapes, auteur) VALUES (?, ?, ?, ?, ?, ?, ?)');
             $stmt->execute($valeurs);
             $id = (int)db()->lastInsertId();
         }
@@ -89,21 +88,13 @@ entete($recette ? 'Modifier' : 'Nouvelle recette');
         <textarea name="etapes" placeholder="Mélanger la farine et les œufs.&#10;Ajouter le lait petit à petit."><?= e($r['etapes']) ?></textarea>
     </label>
 
-    <!-- Les <datalist> proposent les valeurs déjà utilisées pendant la saisie,
-         tout en permettant d'en taper une nouvelle. -->
-    <div class="grid">
-        <label>Auteur
-            <input name="auteur" list="liste-auteurs" value="<?= e($r['auteur']) ?>" placeholder="Mamie, Amélie…">
-        </label>
-        <label>Source
-            <input name="source" list="liste-sources" value="<?= e($r['source']) ?>" placeholder="Carnet de Mamie, HelloFresh…">
-        </label>
-    </div>
+    <!-- La <datalist> propose les auteurs déjà utilisés pendant la saisie,
+         tout en permettant d'en taper un nouveau. -->
+    <label>Auteur
+        <input name="auteur" list="liste-auteurs" value="<?= e($r['auteur']) ?>" placeholder="Mamie, Amélie, Hello Fresh…">
+    </label>
     <datalist id="liste-auteurs">
         <?php foreach (valeurs_distinctes('auteur') as $v): ?><option value="<?= e($v) ?>"><?php endforeach; ?>
-    </datalist>
-    <datalist id="liste-sources">
-        <?php foreach (valeurs_distinctes('source') as $v): ?><option value="<?= e($v) ?>"><?php endforeach; ?>
     </datalist>
 
     <button type="submit">Enregistrer</button>

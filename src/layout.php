@@ -31,8 +31,24 @@ function entete(string $titre, bool $avec_menu = true): void
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2.0.6/css/pico.grey.min.css">
     <style>
         :root { --pico-border-radius: .75rem; } /* coins arrondis partout */
+        /* Même fond pour l'en-tête et le bas des cartes que pour leur contenu */
+        article > header, article > footer { background: var(--pico-card-background-color); }
         .meta { color: var(--pico-muted-color); font-size: .9em; }
         textarea { min-height: 10rem; }
+        /* Accueil : recettes en tuiles (autant de colonnes que la largeur le permet) */
+        .tuiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr)); gap: 1rem; }
+        .tuile { display: flex; flex-direction: column; justify-content: space-between;
+                 height: 100%; margin: 0; padding: 1rem; transition: transform .15s, box-shadow .15s; }
+        a.lien-tuile { color: inherit; text-decoration: none; }
+        a.lien-tuile:hover .tuile { transform: translateY(-2px); box-shadow: 0 .5rem 1.25rem rgba(0,0,0,.12); }
+        .tuile h3 { font-size: 1rem; margin-bottom: .75rem; }
+        /* Boutons côte à côte (Modifier / Supprimer, Annuler / Confirmer) */
+        .actions { display: flex; gap: .75rem; justify-content: flex-end; align-items: center; }
+        .actions form { margin: 0; }
+        .actions button, .actions [role="button"] { width: auto; margin: 0; }
+        /* Bouton de suppression définitive en rouge */
+        button.supprimer { background: #c0392b; border-color: #c0392b; color: #fff; }
+        button.supprimer:hover { background: #a93226; border-color: #a93226; }
     </style>
 </head>
 <body>
@@ -42,7 +58,6 @@ function entete(string $titre, bool $avec_menu = true): void
         <ul><li><a href="index.php"><strong>Recettes d'Amélie</strong></a></li></ul>
         <ul>
             <li><a href="edit.php" role="button">+ Nouvelle recette</a></li>
-            <li><a href="logout.php" class="secondary">Se déconnecter</a></li>
         </ul>
     </nav>
 </header>

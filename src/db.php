@@ -25,17 +25,11 @@ function db(): PDO
             ingredients TEXT NOT NULL DEFAULT \'\', -- une ligne par ingrédient
             etapes      TEXT NOT NULL DEFAULT \'\', -- une ligne par étape
             auteur      TEXT,
-            source      TEXT,                -- carnet de Mamie, HelloFresh…
             cree_le     TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
             modifie_le  TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
         )');
-
-        // Migration : si la base a été créée avant l'ajout de la colonne « source »,
-        // CREATE TABLE IF NOT EXISTS ne la rajoute pas, donc on l'ajoute ici.
-        $colonnes = array_column($pdo->query('PRAGMA table_info(recettes)')->fetchAll(), 'name');
-        if (!in_array('source', $colonnes, true)) {
-            $pdo->exec('ALTER TABLE recettes ADD COLUMN source TEXT');
-        }
+        // (Les bases existantes ont aussi une ancienne colonne « source »,
+        //  qui n'est plus utilisée par le site.)
     }
     return $pdo;
 }
@@ -43,7 +37,7 @@ function db(): PDO
 // Liste des valeurs différentes déjà utilisées dans une colonne (pour les filtres et suggestions).
 function valeurs_distinctes(string $colonne): array
 {
-    if (!in_array($colonne, ['auteur', 'source'], true)) {
+    if (!in_array($colonne, ['auteur'], true)) {
         throw new InvalidArgumentException('Colonne non autorisée');
     }
     return db()->query("SELECT DISTINCT $colonne FROM recettes

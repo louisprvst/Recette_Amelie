@@ -12,3 +12,12 @@
 Au premier démarrage, `seed/recettes.sqlite` est copiée sur le volume.
 Ensuite la base du volume n'est plus jamais écrasée par un redéploiement.
 Une fois le site en ligne et vérifié, le dossier `seed/` peut être supprimé du dépôt.
+
+### Ajouter de nouvelles recettes du seed à une base déjà en ligne
+
+1. Mettre à jour `seed/recettes.sqlite`, commiter et pousser (Railway redéploie).
+2. Dans un terminal : `railway ssh` (après `railway link` sur le projet), puis :
+   ```bash
+   php bin/fusionner-seed.php
+   ```
+Seules les recettes dont le titre n'existe pas encore sont ajoutées ; rien n'est modifié ni supprimé.

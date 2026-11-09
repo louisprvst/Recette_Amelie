@@ -23,7 +23,6 @@ entete($r['titre']);
             <?= $r['temps'] ? ' · ' . (int)$r['temps'] . ' min' : '' ?>
             <?= $r['personnes'] ? ' · ' . (int)$r['personnes'] . ' pers.' : '' ?>
             <?= $r['auteur'] ? ' · par ' . e($r['auteur']) : '' ?>
-            <?= $r['source'] ? ' · ' . e($r['source']) : '' ?>
         </span>
     </header>
 
@@ -41,13 +40,27 @@ entete($r['titre']);
         <?php endforeach; ?>
     </ol>
 
-    <footer>
+    <footer class="actions">
         <a href="edit.php?id=<?= $r['id'] ?>" role="button">Modifier</a>
-        <form method="post" action="delete.php" style="display:inline"
-              onsubmit="return confirm('Supprimer cette recette ?')">
-            <input type="hidden" name="id" value="<?= $r['id'] ?>">
-            <button type="submit" class="secondary outline">Supprimer</button>
-        </form>
+        <!-- Ce bouton ne supprime rien : il ouvre la fenêtre d'avertissement ci-dessous. -->
+        <button type="button" class="secondary outline"
+                onclick="document.getElementById('confirmer-suppression').showModal()">Supprimer</button>
     </footer>
 </article>
+
+<!-- Fenêtre d'avertissement avant suppression -->
+<dialog id="confirmer-suppression">
+    <article>
+        <header><strong>Supprimer cette recette ?</strong></header>
+        <p>« <?= e($r['titre']) ?> » sera définitivement supprimée. Cette action est irréversible.</p>
+        <footer class="actions">
+            <button type="button" class="secondary"
+                    onclick="this.closest('dialog').close()">Annuler</button>
+            <form method="post" action="delete.php">
+                <input type="hidden" name="id" value="<?= $r['id'] ?>">
+                <button type="submit" class="supprimer">Oui, supprimer</button>
+            </form>
+        </footer>
+    </article>
+</dialog>
 <?php pied();
