@@ -15,7 +15,7 @@ if (is_file(__DIR__ . '/config.php')) {
     define('MOT_DE_PASSE_HASH', getenv('MOT_DE_PASSE_HASH'));
 } else {
     http_response_code(500);
-    exit('Mot de passe non défini : lance « php bin/mot-de-passe.php » (en local) ou définis la variable MOT_DE_PASSE_HASH (en ligne). Voir README.');
+    exit('Mot de passe non défini : crée src/config.php (en local) ou définis la variable MOT_DE_PASSE_HASH (en ligne). Voir README.');
 }
 
 // Vrai si la page est servie en HTTPS, y compris derrière le proxy de Railway.
