@@ -28,8 +28,6 @@ function db(): PDO
             cree_le     TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
             modifie_le  TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
         )');
-        // (Les bases existantes ont aussi une ancienne colonne « source »,
-        //  qui n'est plus utilisée par le site.)
     }
     return $pdo;
 }

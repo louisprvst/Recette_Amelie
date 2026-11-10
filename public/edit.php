@@ -2,6 +2,7 @@
 // Formulaire d'ajout (sans ?id=) ou de modification (avec ?id=12).
 
 require_once __DIR__ . '/../src/layout.php';
+require_once __DIR__ . '/../src/import.php';
 exiger_connexion();
 
 $id = (int)($_GET['id'] ?? 0);
@@ -18,7 +19,11 @@ $r = $recette ?? [
 ];
 $erreurs = [];
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['texte_import'])) {
+    // Venu de la page « Importer » : on pré-remplit le formulaire sans rien enregistrer,
+    // pour pouvoir relire et corriger avant de valider.
+    $r = analyser_recette($_POST['texte_import']);
+} elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // On récupère ce qui a été saisi.
     $r = [
         'titre'       => trim($_POST['titre'] ?? ''),

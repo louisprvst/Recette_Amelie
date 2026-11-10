@@ -42,6 +42,17 @@ function entete(string $titre, bool $avec_menu = true): void
         a.lien-tuile { color: inherit; text-decoration: none; }
         a.lien-tuile:hover .tuile { transform: translateY(-2px); box-shadow: 0 .5rem 1.25rem rgba(0,0,0,.12); }
         .tuile h3 { font-size: 1rem; margin-bottom: .75rem; }
+        /* Bouton filtre : même fond que le champ de recherche, sans séparation visible,
+           pour que l'icône semble faire partie du champ. */
+        [role="search"] input[type="search"] { border-right-color: transparent; }
+        .bouton-filtre, .bouton-filtre:hover, .bouton-filtre:focus, .bouton-filtre:active {
+            background-color: var(--pico-form-element-background-color);
+            border-color: var(--pico-form-element-border-color);
+            border-left-color: transparent;
+            color: var(--pico-muted-color);
+            box-shadow: none;
+        }
+        .bouton-filtre:hover, .bouton-filtre.actif { color: var(--pico-color); }
         /* Boutons côte à côte (Modifier / Supprimer, Annuler / Confirmer) */
         .actions { display: flex; gap: .75rem; justify-content: flex-end; align-items: center; }
         .actions form { margin: 0; }
@@ -57,6 +68,7 @@ function entete(string $titre, bool $avec_menu = true): void
     <nav>
         <ul><li><a href="index.php"><strong>Recettes d'Amélie</strong></a></li></ul>
         <ul>
+            <li><a href="import.php" role="button" class="secondary outline">Importer</a></li>
             <li><a href="edit.php" role="button">+ Nouvelle recette</a></li>
         </ul>
     </nav>
