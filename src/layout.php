@@ -27,6 +27,12 @@ function entete(string $titre, bool $avec_menu = true): void
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><?= e($titre) ?> · Recettes d'Amélie</title>
+    <!-- Icône de l'app (Bob) : onglet du navigateur, écran d'accueil iPhone et Android.
+         Versions réduites de img/bob.png. -->
+    <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="img/icone-512.png">
+    <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+    <meta name="apple-mobile-web-app-title" content="Recettes">
     <!-- Variante « grey » de Pico : nuances de gris au lieu du bleu. -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2.0.6/css/pico.grey.min.css">
     <style>
