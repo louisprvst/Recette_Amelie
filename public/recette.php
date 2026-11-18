@@ -19,7 +19,7 @@ entete($r['titre']);
     <header>
         <h1><?= e($r['titre']) ?></h1>
         <span class="meta">
-            <?= e($r['categorie']) ?>
+            <span class="etiquette" style="--c: <?= couleur_categorie($r['categorie']) ?>"><?= e($r['categorie']) ?></span>
             <?= $r['temps'] ? ' · ' . (int)$r['temps'] . ' min' : '' ?>
             <?= $r['personnes'] ? ' · ' . (int)$r['personnes'] . ' pers.' : '' ?>
             <?= $r['auteur'] ? ' · par ' . e($r['auteur']) : '' ?>

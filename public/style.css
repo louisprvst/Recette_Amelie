@@ -1,0 +1,211 @@
+/* Thème sombre « néo-brutaliste » : bordures épaisses, ombres franches sans flou,
+   cartes en forme de dossier avec un onglet coloré. */
+
+:root {
+    color-scheme: dark;
+    --fond: #121214;
+    --carte: #1e1e23;
+    --trait: #ececec;        /* bordures et ombres */
+    --pointille: #3b3b44;    /* séparateurs internes */
+    --texte: #f5f5f5;
+    --discret: #a3a3ad;
+    --encre: #141414;        /* texte posé sur une couleur vive */
+    --jaune: #f7c948;
+    --vert: #6fcf97;
+    --bleu: #5b8def;
+    --rouge: #eb5a5a;
+    --orange: #f2994a;
+    --gris: #8e8e99;
+    --rayon: 14px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+
+body {
+    margin: 0;
+    background: var(--fond);
+    color: var(--texte);
+    font: 400 17px/1.5 'Outfit', system-ui, sans-serif;
+    -webkit-text-size-adjust: 100%;
+}
+a { color: var(--jaune); }
+h1, h2, h3 { margin: 0 0 .75rem; font-weight: 800; line-height: 1.15; letter-spacing: -.02em; }
+h1 { font-size: 2rem; }
+h2 { font-size: 1.35rem; margin-top: 1.75rem; }
+h3 { font-size: 1.05rem; }
+p { margin: 0 0 1rem; }
+ul, ol { padding-left: 1.3rem; }
+li { margin-bottom: .4rem; }
+li::marker { color: var(--jaune); font-weight: 700; }
+
+.container { width: 100%; max-width: 1000px; margin: 0 auto; padding: 0 16px; }
+main.container { padding-bottom: 3rem; }
+.meta { color: var(--discret); font-size: .9rem; }
+.erreur { color: var(--rouge); font-weight: 600; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ---------- Blocs : le « look » de base ---------- */
+.bloc, article {
+    background: var(--carte);
+    border: 2px solid var(--trait);
+    border-radius: var(--rayon);
+    box-shadow: 0 4px 0 var(--trait);
+}
+article { padding: 1.25rem; margin: 0 0 1.5rem; }
+article > header { margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 2px dashed var(--pointille); }
+article > header h1 { margin-bottom: .5rem; }
+article > footer { margin-top: 1.25rem; padding-top: 1rem; border-top: 2px dashed var(--pointille); }
+
+/* ---------- Boutons ---------- */
+button, [role="button"] {
+    display: inline-flex; align-items: center; justify-content: center; gap: .4rem;
+    padding: .7rem 1.2rem;
+    font: inherit; font-weight: 700; text-decoration: none;
+    color: var(--encre); background: var(--jaune);
+    border: 2px solid var(--trait); border-radius: 12px;
+    box-shadow: 0 3px 0 var(--trait);
+    cursor: pointer;
+    transition: transform .08s, box-shadow .08s;
+}
+button.secondary, button.outline, [role="button"].secondary, [role="button"].outline {
+    color: var(--texte); background: var(--carte);
+}
+button.supprimer { background: var(--rouge); }
+/* Effet « on appuie dessus » : le bouton descend sur son ombre */
+:is(button, [role="button"], .icone-bouton):active { transform: translateY(3px); box-shadow: 0 0 0 var(--trait); }
+:is(a, button, input, select, textarea):focus-visible { outline: 3px solid var(--jaune); outline-offset: 3px; }
+
+.icone-bouton {
+    width: 44px; height: 44px; display: inline-grid; place-items: center;
+    color: var(--texte); background: var(--carte);
+    border: 2px solid var(--trait); border-radius: 12px;
+    box-shadow: 0 3px 0 var(--trait);
+    transition: transform .08s, box-shadow .08s;
+}
+
+.actions { display: flex; flex-wrap: wrap; gap: .75rem; justify-content: flex-end; align-items: center; }
+.actions form { margin: 0; }
+
+/* ---------- Formulaires ---------- */
+label { display: block; font-weight: 600; margin-bottom: 1rem; }
+label small { color: var(--discret); font-weight: 400; }
+input:not([type="checkbox"]):not([type="radio"]), select, textarea {
+    display: block; width: 100%; margin-top: .4rem;
+    padding: .7rem .9rem;
+    font: inherit; font-weight: 400; color: var(--texte);
+    background: var(--carte);
+    border: 2px solid var(--trait); border-radius: 12px;
+    box-shadow: 0 3px 0 var(--trait);
+}
+textarea { min-height: 10rem; resize: vertical; }
+select {
+    appearance: none; padding-right: 2.5rem;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23ececec' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right .9rem center;
+}
+::placeholder { color: #75757f; }
+:is(input, select, textarea):focus { outline: none; border-color: var(--jaune); box-shadow: 0 3px 0 var(--jaune); }
+[aria-invalid="true"] { border-color: var(--rouge) !important; }
+form > a { margin-left: 1rem; }
+.grid { display: grid; gap: 0 1rem; grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr)); }
+
+/* ---------- Fenêtre de confirmation ---------- */
+dialog { width: 100%; max-width: 30rem; padding: 16px; border: 0; background: transparent; color: var(--texte); }
+dialog::backdrop { background: rgba(0, 0, 0, .7); }
+dialog article { margin: 0; }
+
+/* ---------- Barre du haut ---------- */
+.barre-haut { display: flex; align-items: center; justify-content: space-between; padding-top: 16px; padding-bottom: 1.25rem; }
+.barre-haut nav { display: flex; gap: .6rem; }
+.logo img {
+    display: block; width: 44px; height: 44px;
+    border: 2px solid var(--trait); border-radius: 12px;
+    box-shadow: 0 3px 0 var(--trait);
+}
+
+/* ---------- Accueil ---------- */
+.titre-accueil { font-size: clamp(2.2rem, 9vw, 3.2rem); line-height: 1.05; margin: .25rem 0 1.5rem; }
+
+.recherche { display: flex; gap: .75rem; margin-bottom: 1rem; }
+.champ-recherche { flex: 1; display: flex; align-items: center; gap: .5rem; padding: 0 .3rem 0 .9rem; min-width: 0; }
+.champ-recherche > svg { flex: none; color: var(--discret); }
+.recherche .champ-recherche input[type="search"] { margin: 0; padding: .85rem 0; border: 0; box-shadow: none; background: transparent; }
+.champ-recherche:focus-within { border-color: var(--jaune); box-shadow: 0 4px 0 var(--jaune); }
+.bouton-filtre, .bouton-filtre:active {
+    flex: none; padding: .55rem; color: var(--discret);
+    background: transparent; border: 0; box-shadow: none; transform: none;
+}
+.bouton-filtre:hover, .bouton-filtre.actif { color: var(--jaune); }
+.bouton-ajout { flex: none; width: 58px; padding: 0; font-size: 1.9rem; font-weight: 600; line-height: 1; }
+
+#filtres { padding: 1rem 1rem 0; margin-bottom: 1.25rem; }
+
+/* Bandeau « recette au hasard » */
+.banniere {
+    display: flex; align-items: center; gap: .9rem;
+    margin: 1.25rem 0 0; padding: .9rem 1rem;
+    color: var(--encre); background: var(--vert); text-decoration: none;
+    transition: transform .08s, box-shadow .08s;
+}
+.banniere:active { transform: translateY(4px); box-shadow: 0 0 0 var(--trait); }
+.banniere .pastille { background: rgba(255, 255, 255, .45); border-color: var(--encre); }
+.banniere strong { display: block; font-size: 1.1rem; line-height: 1.2; }
+.banniere small { opacity: .75; font-weight: 500; }
+.banniere > svg:last-child { margin-left: auto; flex: none; }
+
+/* Catégories en forme de dossiers (la couleur vient de --c) */
+.dossiers { display: grid; grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr)); gap: 1.4rem 1rem; }
+.dossier { position: relative; display: block; padding-top: 14px; color: inherit; text-decoration: none; }
+.dossier .onglet {
+    position: absolute; top: 0; left: 0; width: 55%; height: 32px;
+    background: var(--c); border: 2px solid var(--trait); border-radius: 10px 10px 0 0;
+}
+.dossier .corps {
+    position: relative; min-height: 8.5rem; padding: .9rem;
+    display: flex; flex-direction: column; justify-content: space-between;
+    border-top-left-radius: 4px;
+    transition: transform .08s, box-shadow .08s;
+}
+.dossier:hover .corps { transform: translateY(-2px); box-shadow: 0 6px 0 var(--trait); }
+.dossier:active .corps { transform: translateY(4px); box-shadow: 0 0 0 var(--trait); }
+.dossier strong { font-size: 1.1rem; }
+.dossier .haut { display: flex; justify-content: space-between; align-items: flex-start; gap: .5rem; }
+.compte { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: .3rem; font-size: .8rem; color: var(--discret); }
+
+.pastille {
+    flex: none; width: 40px; height: 40px; display: grid; place-items: center;
+    color: var(--encre); background: var(--c);
+    border: 2px solid var(--trait); border-radius: 10px;
+}
+.badge {
+    padding: 0 .35rem; border-radius: 5px;
+    font-size: .68rem; font-weight: 800; letter-spacing: .03em; text-transform: uppercase;
+    color: var(--encre); background: var(--jaune);
+}
+
+/* Liste des recettes */
+.entete-liste { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; margin-top: 2.25rem; }
+.entete-liste h2 { margin: 0 0 1rem; }
+.tuiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr)); gap: 1rem; }
+a.lien-tuile { color: inherit; text-decoration: none; }
+.tuile {
+    height: 100%; margin: 0; padding: 1rem;
+    display: flex; flex-direction: column; justify-content: space-between; gap: .75rem;
+    transition: transform .08s, box-shadow .08s;
+}
+.tuile h3 { margin: 0; }
+a.lien-tuile:hover .tuile { transform: translateY(-2px); box-shadow: 0 6px 0 var(--trait); }
+a.lien-tuile:active .tuile { transform: translateY(4px); box-shadow: 0 0 0 var(--trait); }
+
+.etiquette {
+    display: inline-block; width: fit-content; padding: .05rem .5rem;
+    font-size: .78rem; font-weight: 700;
+    color: var(--encre); background: var(--c);
+    border: 2px solid var(--trait); border-radius: 7px;
+}
+
+/* ---------- Connexion ---------- */
+.connexion { max-width: 24rem; margin: 3rem auto; }
+.connexion .logo img { width: 72px; height: 72px; margin-bottom: 1rem; }
+.connexion button { width: 100%; }

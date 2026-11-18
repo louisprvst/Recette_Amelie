@@ -61,7 +61,7 @@ entete($recette ? 'Modifier' : 'Nouvelle recette');
 <h1><?= $recette ? 'Modifier « ' . e($recette['titre']) . ' »' : 'Nouvelle recette' ?></h1>
 
 <?php foreach ($erreurs as $err): ?>
-    <p style="color: var(--pico-del-color)"><?= e($err) ?></p>
+    <p class="erreur"><?= e($err) ?></p>
 <?php endforeach; ?>
 
 <form method="post">

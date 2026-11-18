@@ -26,11 +26,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 entete('Connexion', false);
 ?>
-<article style="max-width: 24rem; margin: 3rem auto;">
+<article class="connexion">
+    <span class="logo"><img src="img/apple-touch-icon.png" alt=""></span>
     <h1>Bienvenue</h1>
 
     <?php if ($erreur): ?>
-        <p style="color: var(--pico-del-color)">Mot de passe incorrect.</p>
+        <p class="erreur">Mot de passe incorrect.</p>
     <?php endif; ?>
 
     <form method="post">
